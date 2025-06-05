@@ -4,168 +4,83 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>@ezequiel_l.bran | Anime Edits</title>
-  <!-- Fontes: Orbitron para título, e Anton (estilo solo leveling) para a frase -->
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Montserrat&display=swap" rel="stylesheet" />
   <style>
     body, html {
       margin: 0; padding: 0; height: 100%;
       font-family: 'Orbitron', sans-serif;
-      background: #fff; /* fundo branco sem imagem */
       color: #333;
+      background: url('https://i.imgur.com/RDdha9Y.jpeg') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      user-select: none; /* não seleciona texto */
     }
-
     header {
-      margin-top: 2rem;
+      margin-top: 1.5rem;
+      background: rgba(255 255 255 / 0.6);
       padding: 1rem 2rem;
       border-radius: 12px;
       text-align: center;
       max-width: 600px;
       width: 90%;
-      background: transparent;
     }
-
     h1 {
-      font-size: 2.8rem;
+      font-size: 2.5rem;
       color: #d18888;
-      margin-bottom: 0.5rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      text-shadow:
-        0 0 5px #d18888,
-        0 0 10px #d18888,
-        0 0 20px #ff6f61;
+      margin-bottom: 0.3rem;
     }
-
     p.subtitle {
-      font-family: 'Anton', sans-serif;
-      font-size: 1.5rem;
-      color: #1e90ff;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 1.5rem;
-      text-shadow:
-        0 0 5px #1e90ff,
-        0 0 10px #1e90ff,
-        0 0 15px #00bfff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.2rem;
+      color: #a3d2ff;
+      margin-bottom: 1rem;
     }
-
     p.editforfun {
-      font-size: 1.3rem;
-      color: #555;
+      font-size: 1.5rem;
+      color: white;
+      text-shadow: 2px 2px 8px black;
       font-family: 'Orbitron', sans-serif;
       margin-bottom: 2rem;
-      font-weight: 600;
     }
-
-    .video-wrapper {
-      position: relative;
+    .video-container {
       width: 90%;
       max-width: 600px;
-      aspect-ratio: 16 / 9;
-      margin-bottom: 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .video-container {
-      width: 100%;
-      height: 100%;
+      aspect-ratio: 16/9;
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      margin-bottom: 3rem;
       background: black;
-      pointer-events: none; /* bloqueia clique que leva ao youtube */
     }
-
     iframe {
       width: 100%;
       height: 100%;
       border: none;
-      pointer-events: auto; /* só aqui permite clique nos controles */
+      display: block;
     }
-
-    /* Botões de navegação */
-    button.nav-btn {
-      background: transparent;
-      border: none;
-      color: #1e90ff;
-      font-size: 3rem;
-      font-weight: 900;
-      cursor: pointer;
-      user-select: none;
-      padding: 0 15px;
-      transition: color 0.3s ease;
-    }
-    button.nav-btn:hover {
-      color: #00bfff;
-      text-shadow:
-        0 0 5px #00bfff,
-        0 0 10px #00bfff;
-    }
-
     footer {
-      color: #777;
+      color: #ddd;
       font-family: 'Montserrat', sans-serif;
       margin-bottom: 1rem;
-      user-select: none;
     }
-
   </style>
 </head>
 <body>
   <header>
     <h1>@ezequiel_l.bran</h1>
-    <p class="subtitle">GOSTO DE EDITAR E ÀS VEZES FAÇO EDIÇÕES E AMVS DE ANIMES</p>
+    <p class="subtitle">Gosto de editar e às vezes faço edições e AMVs de animes</p>
     <p class="editforfun">Edit for fun</p>
   </header>
 
-  <div class="video-wrapper">
-    <button id="prevBtn" class="nav-btn" aria-label="Vídeo anterior">&#8592;</button>
-    <div class="video-container">
-      <iframe id="videoFrame" src="https://www.youtube.com/embed/N1oN9sN5eyg?controls=1&modestbranding=1&rel=0" allowfullscreen allow="autoplay"></iframe>
-    </div>
-    <button id="nextBtn" class="nav-btn" aria-label="Próximo vídeo">&#8594;</button>
+  <div class="video-container">
+    <iframe src="https://www.youtube.com/embed/N1oN9sN5eyg" allowfullscreen></iframe>
   </div>
 
   <footer>
     <img src="https://i.imgur.com/7XOvAmN.png" alt="AE logo" width="24" height="24" />
     &nbsp; © 2025 ezequiel_l.bran
   </footer>
-
-  <script>
-    const videos = [
-      "https://www.youtube.com/embed/N1oN9sN5eyg?controls=1&modestbranding=1&rel=0",
-      "https://www.youtube.com/embed/kf4DY9xDUN4?controls=1&modestbranding=1&rel=0",
-      "https://www.youtube.com/embed/tPz8oFwN_IY?controls=1&modestbranding=1&rel=0"
-    ];
-
-    let currentVideoIndex = 0;
-
-    const videoFrame = document.getElementById('videoFrame');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-
-    function loadVideo(index) {
-      currentVideoIndex = index;
-      videoFrame.src = videos[currentVideoIndex];
-    }
-
-    prevBtn.addEventListener('click', () => {
-      const newIndex = (currentVideoIndex - 1 + videos.length) % videos.length;
-      loadVideo(newIndex);
-    });
-
-    nextBtn.addEventListener('click', () => {
-      const newIndex = (currentVideoIndex + 1) % videos.length;
-      loadVideo(newIndex);
-    });
-  </script>
 </body>
 </html>
