@@ -52,12 +52,12 @@
     }
 
     .video-container {
-      position: relative;
       width: 100%;
       aspect-ratio: 16/9;
       border-radius: 10px;
       overflow: hidden;
       background: #000;
+      position: relative;
     }
 
     iframe {
@@ -65,25 +65,37 @@
       height: 100%;
       border: none;
       display: block;
+      pointer-events: none; /* desativa clique direto no iframe */
     }
 
-    /* Camada invisível sobre o vídeo */
+    /* Overlay que bloqueia cliques fora do centro */
     .click-overlay {
       position: absolute;
       top: 0; bottom: 0; left: 0; right: 0;
-      pointer-events: auto;
       z-index: 2;
+      pointer-events: auto;
     }
 
-    /* Área clicável no centro (40% da largura, 100% altura) */
+    /* Barras bloqueadoras esquerda e direita */
     .click-overlay::before {
       content: '';
       position: absolute;
-      top: 0; bottom: 0;
-      left: 30%;
+      top: 0; bottom: 0; left: 0;
       width: 40%;
       background: transparent;
       pointer-events: auto;
+      cursor: default;
+      z-index: 3;
+    }
+
+    .click-overlay::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; right: 0;
+      width: 40%;
+      background: transparent;
+      pointer-events: auto;
+      cursor: default;
       z-index: 3;
     }
 
@@ -97,7 +109,7 @@
       border: none;
       padding: 0.3rem 0.6rem;
       cursor: pointer;
-      z-index: 4;
+      z-index: 5;
       user-select: none;
     }
 
@@ -117,85 +129,11 @@
       .arrow.left { left: -1.5rem; }
       .arrow.right { right: -1.5rem; }
     }
-
-    /* Comentários */
-    .comments-section {
-      width: 90%;
-      max-width: 500px;
-      margin-bottom: 2rem;
-      color: white;
-      font-family: 'Montserrat', sans-serif;
-      position: relative;
-      height: 120px;
-      overflow: hidden;
-      border: 1px solid #00f0ff;
-      border-radius: 8px;
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.5);
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 1rem;
-    }
-    input[type="text"], textarea {
-      padding: 6px 8px;
-      border-radius: 6px;
-      border: none;
-      font-size: 1rem;
-      font-family: 'Montserrat', sans-serif;
-    }
-    textarea {
-      resize: none;
-      height: 60px;
-    }
-    button.send-btn {
-      width: 100px;
-      align-self: center;
-      background-color: #00f0ff;
-      color: #000;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      padding: 6px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    button.send-btn:hover {
-      background-color: #00c0cc;
-    }
-    .comments-display {
-      position: absolute;
-      bottom: 10px;
-      left: 0;
-      width: 100%;
-      pointer-events: none;
-      font-size: 0.9rem;
-      font-weight: bold;
-      text-shadow: 1px 1px 4px black;
-      white-space: nowrap;
-      overflow: hidden;
-      height: 30px;
-    }
-    .comment-bubble {
-      display: inline-block;
-      padding: 4px 10px;
-      margin-right: 30px;
-      background: rgba(0, 240, 255, 0.7);
-      color: black;
-      border-radius: 20px;
-      animation: moveLeft 10s linear forwards;
-    }
-    @keyframes moveLeft {
-      from { transform: translateX(100%); }
-      to { transform: translateX(-100%); }
-    }
   </style>
 </head>
 <body>
   <header>
-    <h1></h1>
+    <h1>@ezequiel_l.bran</h1>
     <p class="subtitle">Gosto de editar e às vezes faço edições e AMVs de animes</p>
     <p class="editforfun">Edit for fun</p>
   </header>
@@ -204,18 +142,9 @@
     <button class="arrow left" onclick="prevVideo()">⟵</button>
     <div class="video-container">
       <iframe id="videoFrame" src="https://www.youtube.com/embed/N1oN9sN5eyg" allowfullscreen></iframe>
-      <div class="click-overlay"></div>
+      <div class="click-overlay" id="clickOverlay"></div>
     </div>
     <button class="arrow right" onclick="nextVideo()">⟶</button>
-  </div>
-
-  <div class="comments-section">
-    <form id="commentForm">
-      <input type="text" id="username" placeholder="Seu nome" required />
-      <textarea id="comment" placeholder="Comentário" required></textarea>
-      <button type="submit" class="send-btn">Enviar</button>
-    </form>
-    <div class="comments-display" id="commentsDisplay"></div>
   </div>
 
   <footer>
@@ -224,7 +153,6 @@
   </footer>
 
   <script>
-    // Vídeos
     const videos = [
       "https://www.youtube.com/embed/N1oN9sN5eyg",
       "https://www.youtube.com/embed/wewRRjft8aU",
@@ -232,6 +160,7 @@
     ];
     let current = 0;
     const videoFrame = document.getElementById("videoFrame");
+    const overlay = document.getElementById("clickOverlay");
 
     function nextVideo() {
       current = (current + 1) % videos.length;
@@ -245,53 +174,30 @@
       resetOverlay();
     }
 
-    // Controle da camada de clique central no vídeo
-    const overlay = document.querySelector('.click-overlay');
-
+    // Reseta o overlay para ativar clique após mudança de vídeo
     function resetOverlay() {
       overlay.style.pointerEvents = 'auto';
     }
 
+    // Controle do clique na área central do vídeo (20% da largura central)
     overlay.addEventListener('click', e => {
       const rect = overlay.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
-
-      const minClick = rect.width * 0.3;
-      const maxClick = rect.width * 0.7;
+      const minClick = rect.width * 0.4;
+      const maxClick = rect.width * 0.6;
 
       if (clickX < minClick || clickX > maxClick) {
+        // Bloqueia clique fora da faixa central
         e.stopPropagation();
         e.preventDefault();
       } else {
+        // Permite o clique no centro e desativa overlay pra passar o clique direto para o iframe (play)
         overlay.style.pointerEvents = 'none';
+        // Reativa depois de 5 segundos para evitar cliques repetidos
         setTimeout(() => {
           overlay.style.pointerEvents = 'auto';
         }, 5000);
       }
-    });
-
-    // Comentários
-    const form = document.getElementById('commentForm');
-    const commentsDisplay = document.getElementById('commentsDisplay');
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const username = document.getElementById('username').value.trim();
-      const comment = document.getElementById('comment').value.trim();
-      if (!username || !comment) return;
-
-      const commentBubble = document.createElement('span');
-      commentBubble.className = 'comment-bubble';
-      commentBubble.textContent = `${username}: ${comment}`;
-
-      commentsDisplay.appendChild(commentBubble);
-
-      // Remove o comentário após a animação de 10s
-      setTimeout(() => {
-        commentBubble.remove();
-      }, 10000);
-
-      form.reset();
     });
   </script>
 </body>
