@@ -55,11 +55,10 @@
       margin-bottom: 3rem;
       background: black;
     }
-    .video-frame {
+    video {
       width: 100%;
       height: 100%;
-      border: none;
-      pointer-events: none;
+      object-fit: cover;
     }
     .controls {
       position: absolute;
@@ -68,6 +67,7 @@
       display: flex;
       justify-content: space-between;
       transform: translateY(-50%);
+      z-index: 1;
     }
     .arrow {
       background: rgba(0, 0, 0, 0.5);
@@ -92,7 +92,10 @@
   </header>
 
   <div class="video-wrapper">
-    <iframe class="video-frame" src="https://www.youtube.com/embed/N1oN9sN5eyg?controls=0&modestbranding=1&rel=0&showinfo=0" allowfullscreen></iframe>
+    <video id="editVideo" autoplay muted loop>
+      <source src="https://archive.org/download/edit-marin/edit-marin.mp4" type="video/mp4">
+      Seu navegador não suporta vídeos HTML5.
+    </video>
     <div class="controls">
       <button class="arrow" onclick="previousVideo()">⟨</button>
       <button class="arrow" onclick="nextVideo()">⟩</button>
@@ -106,18 +109,22 @@
 
   <script>
     const videos = [
-      "https://www.youtube.com/embed/N1oN9sN5eyg?controls=0&modestbranding=1&rel=0&showinfo=0"
+      "https://archive.org/download/edit-marin/edit-marin.mp4"
     ];
     let current = 0;
-    const frame = document.querySelector('.video-frame');
+    const videoElement = document.getElementById('editVideo');
 
     function updateVideo() {
-      frame.src = videos[current];
+      videoElement.src = videos[current];
+      videoElement.load();
+      videoElement.play();
     }
+
     function previousVideo() {
       current = (current - 1 + videos.length) % videos.length;
       updateVideo();
     }
+
     function nextVideo() {
       current = (current + 1) % videos.length;
       updateVideo();
