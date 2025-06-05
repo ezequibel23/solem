@@ -10,87 +10,88 @@
       margin: 0; padding: 0; height: 100%;
       font-family: 'Orbitron', sans-serif;
       color: #fff;
-      background: url('https://i.imgur.com/RDdha9Y.jpeg') no-repeat center center fixed;
+      background: #000 url('https://i.imgur.com/RDdha9Yl.jpeg') no-repeat center center fixed;
       background-size: cover;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
     }
+
     header {
-      margin-top: 1.5rem;
-      padding: 1rem 2rem;
+      margin-top: 1.2rem;
       text-align: center;
-      max-width: 600px;
       width: 90%;
+      max-width: 500px;
     }
+
     h1 {
-      font-size: 2.5rem;
+      font-size: 2rem;
       color: #d18888;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.5rem;
     }
+
     p.subtitle {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.8rem;
-      color: #00ffff;
-      text-shadow: 0 0 10px #00ffff, 0 0 20px #000;
-      animation: pulse 2s infinite alternate;
-      letter-spacing: 1px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      color: #00f0ff;
+      text-shadow: 0 0 6px #00f0ff;
+      margin-bottom: 1rem;
     }
-    @keyframes pulse {
-      from { text-shadow: 0 0 10px #00ffff; }
-      to { text-shadow: 0 0 20px #00ffff, 0 0 30px #000; }
-    }
+
     p.editforfun {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       color: white;
-      text-shadow: 2px 2px 8px black;
-      font-family: 'Orbitron', sans-serif;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
+
     .video-section {
       position: relative;
       width: 90%;
-      max-width: 600px;
-      aspect-ratio: 16/9;
-      margin-bottom: 3rem;
+      max-width: 500px;
+      margin-bottom: 2rem;
     }
+
     .video-container {
       width: 100%;
-      height: 100%;
-      border-radius: 12px;
+      aspect-ratio: 16/9;
+      border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      background: black;
+      background: #000;
     }
+
     iframe {
       width: 100%;
       height: 100%;
       border: none;
-      display: block;
     }
+
     .arrow {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 2rem;
+      font-size: 1.8rem;
       color: white;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0, 0, 0, 0.5);
       border: none;
-      padding: 0.5rem 1rem;
+      padding: 0.3rem 0.6rem;
       cursor: pointer;
-      z-index: 1;
     }
-    .arrow.left {
-      left: -2.5rem;
-    }
-    .arrow.right {
-      right: -2.5rem;
-    }
+
+    .arrow.left { left: -2rem; }
+    .arrow.right { right: -2rem; }
+
     footer {
-      color: #ddd;
+      color: #ccc;
       font-family: 'Montserrat', sans-serif;
-      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 500px) {
+      h1 { font-size: 1.6rem; }
+      p.subtitle { font-size: 1.1rem; }
+      .arrow.left { left: -1.5rem; }
+      .arrow.right { right: -1.5rem; }
     }
   </style>
 </head>
@@ -110,15 +111,15 @@
   </div>
 
   <footer>
-    <img src="https://i.imgur.com/7XOvAmN.png" alt="AE logo" width="24" height="24" />
-    &nbsp; © 2025 ezequiel_l.bran
+    <img src="https://i.imgur.com/7XOvAmN.png" alt="AE logo" width="20" height="20" />
+    © 2025 ezequiel_l.bran
   </footer>
 
   <script>
     const videos = [
       "https://www.youtube.com/embed/N1oN9sN5eyg",
       "https://www.youtube.com/embed/pqAvG4jvZqc",
-      "https://www.youtube.com/embed/v=Tu7KPSsH1Ng"
+      "https://www.youtube.com/embed/Tu7KPSsH1Ng"
     ];
     let current = 0;
     const videoFrame = document.getElementById("videoFrame");
