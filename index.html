@@ -57,46 +57,12 @@
       border-radius: 10px;
       overflow: hidden;
       background: #000;
-      position: relative;
     }
 
     iframe {
       width: 100%;
       height: 100%;
       border: none;
-      display: block;
-      pointer-events: none; /* desativa clique direto no iframe */
-    }
-
-    /* Overlay que bloqueia cliques fora do centro */
-    .click-overlay {
-      position: absolute;
-      top: 0; bottom: 0; left: 0; right: 0;
-      z-index: 2;
-      pointer-events: auto;
-    }
-
-    /* Barras bloqueadoras esquerda e direita */
-    .click-overlay::before {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0; left: 0;
-      width: 40%;
-      background: transparent;
-      pointer-events: auto;
-      cursor: default;
-      z-index: 3;
-    }
-
-    .click-overlay::after {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0; right: 0;
-      width: 40%;
-      background: transparent;
-      pointer-events: auto;
-      cursor: default;
-      z-index: 3;
     }
 
     .arrow {
@@ -109,8 +75,6 @@
       border: none;
       padding: 0.3rem 0.6rem;
       cursor: pointer;
-      z-index: 5;
-      user-select: none;
     }
 
     .arrow.left { left: -2rem; }
@@ -142,9 +106,23 @@
     <button class="arrow left" onclick="prevVideo()">⟵</button>
     <div class="video-container">
       <iframe id="videoFrame" src="https://www.youtube.com/embed/N1oN9sN5eyg" allowfullscreen></iframe>
-      <div class="click-overlay" id="clickOverlay"></div>
     </div>
     <button class="arrow right" onclick="nextVideo()">⟶</button>
+  </div>
+
+  <!-- Comentários animados -->
+  <div style="width: 90%; max-width: 500px; margin-bottom: 2rem; position: relative; height: 110px; overflow: hidden;">
+    <form id="commentForm" style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center; margin-bottom: 0.8rem;">
+      <div style="display: flex; gap: 0.5rem; width: 100%;">
+        <input type="text" id="username" placeholder="Seu nome" required
+          style="flex: 1; padding: 0.5rem; border-radius: 6px; border: none; font-family: 'Montserrat', sans-serif;" />
+        <input type="text" id="comment" placeholder="Comentário" required
+          style="flex: 2; padding: 0.5rem; border-radius: 6px; border: none; font-family: 'Montserrat', sans-serif;" />
+      </div>
+      <button type="submit" style="background: #00f0ff; border: none; padding: 0.5rem 2rem; border-radius: 6px; color: black; cursor: pointer; font-weight: bold; align-self: center;">Enviar</button>
+    </form>
+
+    <div id="commentCloud" style="position: relative; height: 40px; overflow: visible;"></div>
   </div>
 
   <footer>
@@ -160,45 +138,67 @@
     ];
     let current = 0;
     const videoFrame = document.getElementById("videoFrame");
-    const overlay = document.getElementById("clickOverlay");
 
     function nextVideo() {
       current = (current + 1) % videos.length;
       videoFrame.src = videos[current];
-      resetOverlay();
     }
 
     function prevVideo() {
       current = (current - 1 + videos.length) % videos.length;
       videoFrame.src = videos[current];
-      resetOverlay();
     }
 
-    // Reseta o overlay para ativar clique após mudança de vídeo
-    function resetOverlay() {
-      overlay.style.pointerEvents = 'auto';
-    }
+    // Sistema de comentários animados
+    const form = document.getElementById('commentForm');
+    const cloud = document.getElementById('commentCloud');
 
-    // Controle do clique na área central do vídeo (20% da largura central)
-    overlay.addEventListener('click', e => {
-      const rect = overlay.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const minClick = rect.width * 0.4;
-      const maxClick = rect.width * 0.6;
+    form.addEventListener('submit', e => {
+      e.preventDefault();
 
-      if (clickX < minClick || clickX > maxClick) {
-        // Bloqueia clique fora da faixa central
-        e.stopPropagation();
-        e.preventDefault();
-      } else {
-        // Permite o clique no centro e desativa overlay pra passar o clique direto para o iframe (play)
-        overlay.style.pointerEvents = 'none';
-        // Reativa depois de 5 segundos para evitar cliques repetidos
-        setTimeout(() => {
-          overlay.style.pointerEvents = 'auto';
-        }, 5000);
-      }
+      const user = form.username.value.trim();
+      const text = form.comment.value.trim();
+      if (!user || !text) return;
+
+      addComment(user, text);
+
+      form.username.value = '';
+      form.comment.value = '';
     });
+
+    function addComment(user, text) {
+      const commentEl = document.createElement('div');
+      commentEl.textContent = `${user}: ${text}`;
+      commentEl.style.position = 'absolute';
+      commentEl.style.whiteSpace = 'nowrap';
+      commentEl.style.top = Math.random() * 30 + 'px';
+      commentEl.style.right = '-100%';
+      commentEl.style.color = '#00f0ff';
+      commentEl.style.fontFamily = "'Bebas Neue', sans-serif";
+      commentEl.style.fontSize = '1.1rem';
+      commentEl.style.textShadow = '0 0 6px #00f0ff';
+      commentEl.style.pointerEvents = 'none';
+
+      cloud.appendChild(commentEl);
+
+      const totalDistance = cloud.clientWidth + commentEl.clientWidth;
+      const duration = 15000 + Math.random() * 10000; // 15-25 segundos
+
+      let start = null;
+
+      function step(timestamp) {
+        if (!start) start = timestamp;
+        const elapsed = timestamp - start;
+        const progress = elapsed / duration;
+        if (progress < 1) {
+          commentEl.style.right = (-commentEl.clientWidth + totalDistance * progress) + 'px';
+          requestAnimationFrame(step);
+        } else {
+          cloud.removeChild(commentEl);
+        }
+      }
+      requestAnimationFrame(step);
+    }
   </script>
 </body>
 </html>
