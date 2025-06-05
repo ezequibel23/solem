@@ -4,41 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>@ezequiel_l.bran | Anime Edits</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Montserrat:wght@500&family=Bakbak+One&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Montserrat&display=swap" rel="stylesheet" />
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body, html {
-      margin: 0; padding: 0; height: 100%;
+      height: 100%;
       font-family: 'Orbitron', sans-serif;
       color: #fff;
-      background: url('https://i.imgur.com/RDdha9Y.jpeg') no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
+      overflow: hidden;
     }
+
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
     header {
       margin-top: 2rem;
+      background: rgba(0, 0, 0, 0.6);
       padding: 1rem 2rem;
+      border-radius: 12px;
       text-align: center;
       max-width: 600px;
       width: 90%;
+      margin-inline: auto;
     }
+
     h1 {
       font-size: 2.5rem;
       color: #d18888;
       margin-bottom: 0.3rem;
     }
+
     p.subtitle {
-      font-family: 'Bakbak One', cursive;
-      font-size: 1.6rem;
-      background: linear-gradient(90deg, #6e00ff, #00d0ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 3px 3px 10px #000000;
-      letter-spacing: 1px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.2rem;
+      color: #a3d2ff;
       margin-bottom: 1rem;
     }
+
     p.editforfun {
       font-size: 1.5rem;
       color: white;
@@ -46,58 +57,48 @@
       font-family: 'Orbitron', sans-serif;
       margin-bottom: 2rem;
     }
-    .video-wrapper {
-      position: relative;
+
+    .video-container {
       width: 90%;
       max-width: 600px;
       aspect-ratio: 16/9;
+      border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      margin-bottom: 3rem;
-      background: black;
+      margin: 0 auto 3rem;
     }
-    video.video-frame {
+
+    iframe {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-    }
-    .controls {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      transform: translateY(-50%);
-      z-index: 2;
-    }
-    .arrow {
-      background: rgba(0, 0, 0, 0.5);
       border: none;
-      color: white;
-      font-size: 2rem;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
+      pointer-events: none; /* Impede clique no vídeo */
     }
+
     footer {
       color: #ddd;
       font-family: 'Montserrat', sans-serif;
+      text-align: center;
       margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
+
+  <canvas id="bgCanvas"></canvas>
+
   <header>
     <h1>@ezequiel_l.bran</h1>
     <p class="subtitle">Gosto de editar e às vezes faço edições e AMVs de animes</p>
     <p class="editforfun">Edit for fun</p>
   </header>
 
-  <div class="video-wrapper">
-    <video class="video-frame" src="https://cdn.coverr.co/videos/coverr-night-sky-timelapse-1578/1080p.mp4" autoplay muted loop playsinline></video>
-    <div class="controls">
-      <button class="arrow" onclick="previousVideo()">⟨</button>
-      <button class="arrow" onclick="nextVideo()">⟩</button>
-    </div>
+  <div class="video-container">
+    <iframe
+      src="https://www.youtube.com/embed/N1oN9sN5eyg?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&rel=0"
+      allow="autoplay"
+      allowfullscreen
+    ></iframe>
   </div>
 
   <footer>
@@ -105,26 +106,52 @@
     &nbsp; © 2025 ezequiel_l.bran
   </footer>
 
+  <!-- Script para fundo animado estilo partículas negras -->
   <script>
-    const videos = [
-      "https://cdn.coverr.co/videos/coverr-night-sky-timelapse-1578/1080p.mp4",
-      "https://cdn.coverr.co/videos/coverr-urban-jogging-6693/1080p.mp4"
-    ];
-    let current = 0;
-    const frame = document.querySelector('.video-frame');
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
 
-    function updateVideo() {
-      frame.src = videos[current];
-      frame.play();
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 3 + 1,
+        speedX: (Math.random() - 0.5) * 0.8,
+        speedY: (Math.random() - 0.5) * 0.8
+      });
     }
-    function previousVideo() {
-      current = (current - 1 + videos.length) % videos.length;
-      updateVideo();
+
+    function animate() {
+      ctx.fillStyle = 'rgba(0,0,0,0.3)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+      });
+
+      requestAnimationFrame(animate);
     }
-    function nextVideo() {
-      current = (current + 1) % videos.length;
-      updateVideo();
-    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
   </script>
 </body>
 </html>
