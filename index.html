@@ -31,11 +31,12 @@
     }
     p.subtitle {
       font-family: 'Bakbak One', cursive;
-      font-size: 1.3rem;
-      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      font-size: 1.6rem;
+      background: linear-gradient(90deg, #6e00ff, #00d0ff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 2px 2px 8px black;
+      text-shadow: 3px 3px 10px #000000;
+      letter-spacing: 1px;
       margin-bottom: 1rem;
     }
     p.editforfun {
@@ -55,7 +56,7 @@
       margin-bottom: 3rem;
       background: black;
     }
-    video {
+    video.video-frame {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -67,7 +68,7 @@
       display: flex;
       justify-content: space-between;
       transform: translateY(-50%);
-      z-index: 1;
+      z-index: 2;
     }
     .arrow {
       background: rgba(0, 0, 0, 0.5);
@@ -92,10 +93,7 @@
   </header>
 
   <div class="video-wrapper">
-    <video id="editVideo" autoplay muted loop>
-      <source src="https://archive.org/download/edit-marin/edit-marin.mp4" type="video/mp4">
-      Seu navegador não suporta vídeos HTML5.
-    </video>
+    <video class="video-frame" src="https://cdn.coverr.co/videos/coverr-night-sky-timelapse-1578/1080p.mp4" autoplay muted loop playsinline></video>
     <div class="controls">
       <button class="arrow" onclick="previousVideo()">⟨</button>
       <button class="arrow" onclick="nextVideo()">⟩</button>
@@ -109,22 +107,20 @@
 
   <script>
     const videos = [
-      "https://archive.org/download/edit-marin/edit-marin.mp4"
+      "https://cdn.coverr.co/videos/coverr-night-sky-timelapse-1578/1080p.mp4",
+      "https://cdn.coverr.co/videos/coverr-urban-jogging-6693/1080p.mp4"
     ];
     let current = 0;
-    const videoElement = document.getElementById('editVideo');
+    const frame = document.querySelector('.video-frame');
 
     function updateVideo() {
-      videoElement.src = videos[current];
-      videoElement.load();
-      videoElement.play();
+      frame.src = videos[current];
+      frame.play();
     }
-
     function previousVideo() {
       current = (current - 1 + videos.length) % videos.length;
       updateVideo();
     }
-
     function nextVideo() {
       current = (current + 1) % videos.length;
       updateVideo();
