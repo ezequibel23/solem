@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>@ezequiel_l.bran | Anime Edits</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Montserrat&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Montserrat&family=Bebas+Neue&display=swap" rel="stylesheet" />
   <style>
     body, html {
       margin: 0; padding: 0; height: 100%;
       font-family: 'Orbitron', sans-serif;
-      color: #333;
+      color: #fff;
       background: url('https://i.imgur.com/RDdha9Y.jpeg') no-repeat center center fixed;
       background-size: cover;
       display: flex;
@@ -19,9 +19,7 @@
     }
     header {
       margin-top: 1.5rem;
-      background: rgba(255 255 255 / 0.6);
       padding: 1rem 2rem;
-      border-radius: 12px;
       text-align: center;
       max-width: 600px;
       width: 90%;
@@ -32,10 +30,16 @@
       margin-bottom: 0.3rem;
     }
     p.subtitle {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1.2rem;
-      color: #a3d2ff;
-      margin-bottom: 1rem;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.8rem;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff, 0 0 20px #000;
+      animation: pulse 2s infinite alternate;
+      letter-spacing: 1px;
+    }
+    @keyframes pulse {
+      from { text-shadow: 0 0 10px #00ffff; }
+      to { text-shadow: 0 0 20px #00ffff, 0 0 30px #000; }
     }
     p.editforfun {
       font-size: 1.5rem;
@@ -44,14 +48,19 @@
       font-family: 'Orbitron', sans-serif;
       margin-bottom: 2rem;
     }
-    .video-container {
+    .video-section {
+      position: relative;
       width: 90%;
       max-width: 600px;
       aspect-ratio: 16/9;
+      margin-bottom: 3rem;
+    }
+    .video-container {
+      width: 100%;
+      height: 100%;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      margin-bottom: 3rem;
       background: black;
     }
     iframe {
@@ -59,6 +68,24 @@
       height: 100%;
       border: none;
       display: block;
+    }
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: white;
+      background: rgba(0,0,0,0.4);
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      z-index: 1;
+    }
+    .arrow.left {
+      left: -2.5rem;
+    }
+    .arrow.right {
+      right: -2.5rem;
     }
     footer {
       color: #ddd;
@@ -74,13 +101,37 @@
     <p class="editforfun">Edit for fun</p>
   </header>
 
-  <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/N1oN9sN5eyg" allowfullscreen></iframe>
+  <div class="video-section">
+    <button class="arrow left" onclick="prevVideo()">⟵</button>
+    <div class="video-container">
+      <iframe id="videoFrame" src="https://www.youtube.com/embed/N1oN9sN5eyg" allowfullscreen></iframe>
+    </div>
+    <button class="arrow right" onclick="nextVideo()">⟶</button>
   </div>
 
   <footer>
     <img src="https://i.imgur.com/7XOvAmN.png" alt="AE logo" width="24" height="24" />
     &nbsp; © 2025 ezequiel_l.bran
   </footer>
+
+  <script>
+    const videos = [
+      "https://www.youtube.com/embed/N1oN9sN5eyg",
+      "https://www.youtube.com/embed/pqAvG4jvZqc",
+      "https://www.youtube.com/embed/v=Tu7KPSsH1Ng"
+    ];
+    let current = 0;
+    const videoFrame = document.getElementById("videoFrame");
+
+    function nextVideo() {
+      current = (current + 1) % videos.length;
+      videoFrame.src = videos[current];
+    }
+
+    function prevVideo() {
+      current = (current - 1 + videos.length) % videos.length;
+      videoFrame.src = videos[current];
+    }
+  </script>
 </body>
 </html>
