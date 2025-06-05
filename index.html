@@ -6,50 +6,37 @@
   <title>@ezequiel_l.bran | Anime Edits</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Montserrat&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
     body, html {
-      height: 100%;
+      margin: 0; padding: 0; height: 100%;
       font-family: 'Orbitron', sans-serif;
-      color: #fff;
-      overflow: hidden;
+      color: #333;
+      background: url('https://i.imgur.com/RDdha9Y.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
     }
-
-    canvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
     header {
-      margin-top: 2rem;
-      background: rgba(0, 0, 0, 0.6);
+      margin-top: 1.5rem;
+      background: rgba(255 255 255 / 0.6);
       padding: 1rem 2rem;
       border-radius: 12px;
       text-align: center;
       max-width: 600px;
       width: 90%;
-      margin-inline: auto;
     }
-
     h1 {
       font-size: 2.5rem;
       color: #d18888;
       margin-bottom: 0.3rem;
     }
-
     p.subtitle {
       font-family: 'Montserrat', sans-serif;
       font-size: 1.2rem;
       color: #a3d2ff;
       margin-bottom: 1rem;
     }
-
     p.editforfun {
       font-size: 1.5rem;
       color: white;
@@ -57,7 +44,6 @@
       font-family: 'Orbitron', sans-serif;
       margin-bottom: 2rem;
     }
-
     .video-container {
       width: 90%;
       max-width: 600px;
@@ -65,27 +51,23 @@
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      margin: 0 auto 3rem;
+      margin-bottom: 3rem;
+      background: black;
     }
-
     iframe {
       width: 100%;
       height: 100%;
       border: none;
+      display: block;
     }
-
     footer {
       color: #ddd;
       font-family: 'Montserrat', sans-serif;
-      text-align: center;
       margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
-
-  <canvas id="bgCanvas"></canvas>
-
   <header>
     <h1>@ezequiel_l.bran</h1>
     <p class="subtitle">Gosto de editar e às vezes faço edições e AMVs de animes</p>
@@ -93,64 +75,12 @@
   </header>
 
   <div class="video-container">
-    <iframe
-      src="https://www.youtube.com/embed/N1oN9sN5eyg?controls=1&modestbranding=1&rel=0"
-      allow="autoplay"
-      allowfullscreen
-    ></iframe>
+    <iframe src="https://www.youtube.com/embed/N1oN9sN5eyg" allowfullscreen></iframe>
   </div>
 
   <footer>
     <img src="https://i.imgur.com/7XOvAmN.png" alt="AE logo" width="24" height="24" />
     &nbsp; © 2025 ezequiel_l.bran
   </footer>
-
-  <!-- Script para fundo animado estilo partículas negras -->
-  <script>
-    const canvas = document.getElementById('bgCanvas');
-    const ctx = canvas.getContext('2d');
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let particles = [];
-
-    for (let i = 0; i < 100; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 3 + 1,
-        speedX: (Math.random() - 0.5) * 0.8,
-        speedY: (Math.random() - 0.5) * 0.8
-      });
-    }
-
-    function animate() {
-      ctx.fillStyle = 'rgba(0,0,0,0.3)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-      particles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-
-        p.x += p.speedX;
-        p.y += p.speedY;
-
-        if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-      });
-
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-  </script>
 </body>
 </html>
