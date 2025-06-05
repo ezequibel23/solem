@@ -97,7 +97,7 @@
 </head>
 <body>
   <header>
-    <h1>@ezequiel_l.bran</h1>
+    <h1></h1>
     <p class="subtitle">Gosto de editar e às vezes faço edições e AMVs de animes</p>
     <p class="editforfun">Edit for fun</p>
   </header>
@@ -111,13 +111,15 @@
   </div>
 
   <!-- Comentários animados -->
-  <div style="width: 90%; max-width: 500px; margin-bottom: 2rem; position: relative; height: 80px; overflow: hidden;">
-    <form id="commentForm" style="display: flex; gap: 0.5rem; margin-bottom: 0.8rem;">
-      <input type="text" id="username" placeholder="Seu nome" required
-        style="flex: 1; padding: 0.5rem; border-radius: 6px; border: none; font-family: 'Montserrat', sans-serif;" />
-      <input type="text" id="comment" placeholder="Comentário" required
-        style="flex: 2; padding: 0.5rem; border-radius: 6px; border: none; font-family: 'Montserrat', sans-serif;" />
-      <button type="submit" style="background: #00f0ff; border: none; padding: 0 1rem; border-radius: 6px; color: black; cursor: pointer; font-weight: bold;">Enviar</button>
+  <div style="width: 90%; max-width: 500px; margin-bottom: 2rem; position: relative; height: 110px; overflow: hidden;">
+    <form id="commentForm" style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center; margin-bottom: 0.8rem;">
+      <div style="display: flex; gap: 0.5rem; width: 100%;">
+        <input type="text" id="username" placeholder="Seu nome" required
+          style="flex: 1; padding: 0.5rem; border-radius: 6px; border: none; font-family: 'Montserrat', sans-serif;" />
+        <input type="text" id="comment" placeholder="Comentário" required
+          style="flex: 2; padding: 0.5rem; border-radius: 6px; border: none; font-family: 'Montserrat', sans-serif;" />
+      </div>
+      <button type="submit" style="background: #00f0ff; border: none; padding: 0.5rem 2rem; border-radius: 6px; color: black; cursor: pointer; font-weight: bold; align-self: center;">Enviar</button>
     </form>
 
     <div id="commentCloud" style="position: relative; height: 40px; overflow: visible;"></div>
